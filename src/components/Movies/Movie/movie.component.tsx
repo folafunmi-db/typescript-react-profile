@@ -1,6 +1,7 @@
 import React from "react";
 import "./movie.style.css";
-interface Props {
+
+type Props = {
 	title: string;
 	year: string;
 	image: string;

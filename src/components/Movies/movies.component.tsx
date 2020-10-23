@@ -22,12 +22,13 @@ const API_KEY = "95b26974";
 export const Movies = () => {
 	const [movies, setMovies] = useState<any>([]);
 	useEffect(() => {
-		const promises = series.map((series) => {
-			fetch(
+		const promises = series.map(async (series) => {
+			const res = await fetch(
 				`http://www.omdbapi.com/?apikey=${API_KEY}&s=${encodeURIComponent(
 					series
 				)}&page=1`
-			).then((res) => res.json());
+			);
+			return await res.json();
 		});
 
 		// After all promises get resolved
@@ -38,16 +39,19 @@ export const Movies = () => {
 
 	return (
 		<div className="movies">
-			{movies.flat(2).map((movie: any) => {
-				return (
-					<Movie
-						key={movie.imdbID}
-						title={movie.title}
-						year={movie.year}
-						image={movie.image}
-					/>
-				);
-			})}
+			{movies
+				.map((movie: any) => movie.Search)
+				.flat(2)
+				.map((movie: any) => {
+					return (
+						<Movie
+							key={movie.imdbID}
+							title={movie.Title}
+							year={movie.Year}
+							image={movie.Poster}
+						/>
+					);
+				})}
 		</div>
 	);
 };
